@@ -1,0 +1,48 @@
+@import 'nib'
+
+global-reset()
+
+body
+  font-family: Helvetica, arial, freesans, clean, sans-serif
+  font-size: 13px
+  color: #222
+  background-color: #ccc
+
+#history
+  width: 600px
+  margin: 20px auto
+  background-color: white
+
+.load-more
+
+  a
+    text-align: center
+    display: block
+    color: #222
+    padding: 10px 10px
+    text-decoration: none
+    font-weight: bold
+
+table
+  width: 100%
+
+  tr
+
+    td
+      padding: 5px 10px
+      border-bottom: 1px solid #eaeaea
+
+    td.nick
+      background-color: #efefef
+      border-right: 1px solid #eaeaea
+      text-align: right
+      font-weight: bold
+
+    td.when
+      text-align: right
+
+    td.text
+      width: 50%
+
+      &.available, &.unavailable
+        color: #999

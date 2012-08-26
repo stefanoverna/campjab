@@ -1,0 +1,32 @@
+html
+  head
+    title tavern-logger
+    script(src='/jquery-1.7.2.js')
+    script(src='/knockout-2.1.0.js')
+    script(src='/timeago-0.11.4.js')
+    script(src="/socket.io/socket.io.js")
+    != js('client')
+    != css('application')
+
+  body
+    section#history
+
+      div.load-more(data-bind='visible: events().length > 0')
+        a(data-bind='click: loadEarlier', href="#") Load 50 more
+
+      table
+        tbody(data-bind='foreach: events')
+
+          tr(data-bind='ifnot: type() == "groupchat"')
+            td.nick
+            td.text(data-bind='attr: { class: "text " + type() }')
+              span(data-bind='text: from')
+              = " "
+              span(data-bind='text: body')
+            td.when(data-bind='text: time')
+
+          tr(data-bind='if: type() == "groupchat"')
+            td.nick(data-bind='text: from')
+            td.text.chatgroup(data-bind='text: body')
+            td.when(data-bind='text: time')
+

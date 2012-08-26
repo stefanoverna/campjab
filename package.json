@@ -1,0 +1,27 @@
+{
+  "name": "tavern-logger",
+  "subdomain": "welaika",
+  "scripts": {
+    "start": "coffee app.coffee"
+  },
+  "version": "0.0.0",
+  "description": "XMPP bot controllable via web interface",
+  "dependencies": {
+    "junction": "",
+    "junction-ping": "",
+    "junction-delay": "",
+    "nconf": "",
+    "socket.io": "",
+    "jade": "",
+    "connect-assets": "",
+    "coffee-script": "",
+    "express": "",
+    "stylus": "",
+    "mongoose": "",
+    "nib": ""
+  },
+  "engines": {
+    "node": ""
+  },
+  "main": "app.coffee"
+}
