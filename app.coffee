@@ -1,16 +1,12 @@
 require './lib/config'
 require './models'
-
+inspect = require('util').inspect
 mongoose = require 'mongoose'
 
 xmppClient = require './lib/xmpp-room-client'
 server = require './lib/server'
 
-global.db = mongoose.createConnection(
-  config.get('mongodb:host'),
-  config.get('mongodb:db'),
-  config.get('mongodb:port')
-)
+global.db = mongoose.createConnection config.get('mongodb:uri')
 
 db.on 'error', console.error.bind(console, 'connection error:')
 db.once 'open', ->
@@ -30,5 +26,6 @@ db.once 'open', ->
       room.on event, (eventDetails) ->
         console.dir eventDetails
         roomEvent = new RoomEvent(eventDetails)
-        roomEvent.save()
-        server.pushEvent(roomEvent)
+        roomEvent.save ->
+          server.pushEvent(roomEvent)
+

@@ -1,11 +1,11 @@
 {
-  "name": "tavern-logger",
+  "name": "campjab",
   "subdomain": "welaika",
   "scripts": {
     "start": "coffee app.coffee"
   },
-  "version": "0.0.0",
-  "description": "XMPP bot controllable via web interface",
+  "version": "0.0.1",
+  "description": "A MUC Jabber bot that archives all the messages and shows them in realtime on a web frontend (inline images and oembed content supported)",
   "dependencies": {
     "junction": "",
     "junction-ping": "",
@@ -18,10 +18,13 @@
     "express": "",
     "stylus": "",
     "mongoose": "",
-    "nib": ""
+    "nib": "",
+    "async": "",
+    "oembed": ""
   },
   "engines": {
-    "node": ""
+    "node": "0.8.4",
+    "npm": "1.1.49"
   },
   "main": "app.coffee"
 }

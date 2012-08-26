@@ -1,26 +1,38 @@
 $ ->
   class RoomEventModel
+    urlRegexp: /((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?/
     constructor: (attrs) ->
-      console.log attrs
       @type = ko.observable(attrs.type)
       @body = ko.observable(attrs.body)
       @from = ko.observable(attrs.from)
       @room = ko.observable(attrs.room)
       @at = ko.observable(attrs.at)
+      @meta = ko.observable(attrs.meta)
       @id = ko.observable(attrs._id)
       @time = ko.computed(
-        ->
-          date = new Date(@at())
-          "#{date.getHours()}:#{date.getMinutes()}"
-        this)
-      @timeAgo = ko.computed(
-        -> $.timeago(@at()) if @at()?,
+        -> moment(new Date(@at())).format("HH:mm")
         this)
 
       if @type() == "available"
         @body "connected"
       if @type() == "unavailable"
         @body "disconnected"
+
+      @inlineImages()
+
+    inlineImages: ->
+      body = @body()
+      for meta in @meta() || []
+        link = meta.link
+        meta = meta.meta
+        if meta.image
+          body = body.replace(link, "<img src='#{link}'/>")
+        else if meta.oembed
+          body = body.replace(link, "<div class='oembed'>#{meta.oembed.html}</div>" || "<img src='#{meta.oembed.thumbnail_url}'/>")
+        else
+          body = body.replace(link, "<a href='#{link}' target='_blank'>#{link}</a>")
+
+      @body body
 
   class RoomViewModel
     events: ko.observableArray([])
@@ -42,6 +54,5 @@ $ ->
       $.getJSON url, (events) =>
         for event in events.reverse()
           @events.unshift new RoomEventModel(event)
-
 
   ko.applyBindings new RoomViewModel

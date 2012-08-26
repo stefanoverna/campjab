@@ -3,7 +3,7 @@ html
     title tavern-logger
     script(src='/jquery-1.7.2.js')
     script(src='/knockout-2.1.0.js')
-    script(src='/timeago-0.11.4.js')
+    script(src='/moment-1.7.0.js')
     script(src="/socket.io/socket.io.js")
     != js('client')
     != css('application')
@@ -22,11 +22,11 @@ html
             td.text(data-bind='attr: { class: "text " + type() }')
               span(data-bind='text: from')
               = " "
-              span(data-bind='text: body')
+              span(data-bind='html: body')
             td.when(data-bind='text: time')
 
           tr(data-bind='if: type() == "groupchat"')
             td.nick(data-bind='text: from')
-            td.text.chatgroup(data-bind='text: body')
+            td.text.chatgroup(data-bind='html: body')
             td.when(data-bind='text: time')
 
