@@ -1,9 +1,8 @@
-http = require 'http'
-url = require 'url'
-oembed = require 'oembed'
-async = require 'async'
+HttpClient = require 'scoped-http-client'
+Oembed = require 'oembed'
+Async = require 'async'
 
-oembed.EMBEDLY_KEY = config.get('oembed:embedly_key')
+Oembed.EMBEDLY_KEY = config.get('oembed:embedly_key')
 
 SCHEME = "[a-z\\d.-]+://"
 IPV4 = "(?:(?:[0-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])\\.){3}(?:[0-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])"
@@ -20,7 +19,6 @@ URI_RE = new RegExp( "(?:" + URI1 + "|" + URI2 + "|" + EMAIL + ")", "ig" )
 
 class LinkMeta
   constructor: (@link) ->
-    @url = url.parse(@link)
 
   meta: (done) ->
     methods = [
@@ -28,7 +26,7 @@ class LinkMeta
       (done) => @isOembed(done)
     ]
 
-    async.parallel methods, (error, results) ->
+    Async.parallel methods, (error, results) ->
       if error
         done(error)
       else
@@ -39,26 +37,15 @@ class LinkMeta
         done(null, merged)
 
   isImage: (done) ->
-    options =
-      method: 'HEAD'
-      path: @url.pathname
-      host: @url.host
-      port: @url.port || 80
-
-    req = http.request options, (response) ->
-      response.setEncoding('utf8')
-      if type = response.headers['content-type']
-        type = type.split(";")[0]
-        done(null, image: !!type.match(/image/))
-      else
-        console.log "no"
+    HttpClient.create(@link).head() (err, res, body) =>
+      if err or !res.headers['content-type']
         done(null, image: no)
-
-    req.on 'error', -> done(null, image: no)
-    req.end()
+      else
+        type = res.headers['content-type'].split(";")[0]
+        done(null, image: !!type.match(/image/))
 
   isOembed: (done) ->
-    oembed.fetch @link, maxwidth: 1920, (error, result) ->
+    Oembed.fetch @link, maxwidth: 1920, (error, result) ->
       if error
         done(null, oembed: no)
       else if result

@@ -28,7 +28,13 @@ $ ->
         if meta.image
           body = body.replace(link, "<img src='#{link}'/>")
         else if meta.oembed
-          body = body.replace(link, "<div class='oembed'>#{meta.oembed.html}</div>" || "<img src='#{meta.oembed.thumbnail_url}'/>")
+          body = body.replace(link, "<a href='#{link}' target='_blank'>#{link}</a>")
+          if html = meta.oembed.html
+            body += "<div class='oembed'>#{html}</div>"
+          else if thumb = meta.oembed.thumbnail_url
+            body += "<img src='#{thumb}'/>"
+          if desc = meta.oembed.description
+            body += "<div class='oembed-description'>#{desc}</div>"
         else
           body = body.replace(link, "<a href='#{link}' target='_blank'>#{link}</a>")
 

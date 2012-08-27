@@ -27,6 +27,9 @@ class Server
     else
       (req, res, next) -> next()
 
+    @app.post '/ping', (req, res) ->
+      res.end 'pong!'
+
     @app.get '/', auth, (req, res) ->
       res.render "index.jade"
 

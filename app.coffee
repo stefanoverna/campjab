@@ -1,12 +1,12 @@
 require './lib/config'
 require './models'
-inspect = require('util').inspect
-mongoose = require 'mongoose'
+Mongoose = require 'mongoose'
+HttpClient = require 'scoped-http-client'
 
 xmppClient = require './lib/xmpp-room-client'
 server = require './lib/server'
 
-global.db = mongoose.createConnection config.get('mongodb:uri')
+global.db = Mongoose.createConnection config.get('mongodb:uri')
 
 db.on 'error', console.error.bind(console, 'connection error:')
 db.once 'open', ->
@@ -29,3 +29,9 @@ db.once 'open', ->
         roomEvent.save ->
           server.pushEvent(roomEvent)
 
+  if url = config.get('server:url')
+    url += '/' unless /\/$/.test url
+    setInterval =>
+      HttpClient.create("#{url}ping").post() (err, res, body) =>
+        console.log 'ping!'
+    , 1200000

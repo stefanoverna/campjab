@@ -1,13 +1,13 @@
-mongoose = require 'mongoose'
+Mongoose = require 'mongoose'
 linkMeta = require '../lib/link-meta'
-async = require 'async'
+Async = require 'async'
 
-schema = new mongoose.Schema
+schema = new Mongoose.Schema
   room: String,
   type: String,
   from: String,
   body: String,
-  meta: mongoose.Schema.Types.Mixed,
+  meta: Mongoose.Schema.Types.Mixed,
   at: Date
 
 schema.statics.findByDate = (limit = 50, since = null, cb) ->
@@ -33,10 +33,10 @@ schema.pre 'save', true, (next, done) ->
         if err then done(err) else done(null, link: match, meta: result)
 
   if jobs.length > 0
-    async.parallel jobs, (err, results) ->
+    Async.parallel jobs, (err, results) ->
       event.set 'meta', results
       done()
   else
     done()
 
-mongoose.model 'RoomEvent', schema
+Mongoose.model 'RoomEvent', schema

@@ -2,6 +2,7 @@ nconf = require('nconf')
 
 nconf.defaults
   server:
+    url: process.env.SERVER_URL
     host: '0.0.0.0'
     port: process.env.PORT or 8000
     basic_auth:

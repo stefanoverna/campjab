@@ -20,7 +20,8 @@
     "mongoose": "",
     "nib": "",
     "async": "",
-    "oembed": ""
+    "oembed": "",
+    "scoped-http-client": ""
   },
   "engines": {
     "node": "0.8.4",
