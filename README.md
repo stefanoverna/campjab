@@ -1,22 +1,20 @@
-# nodejs-based XMPP Bot
+# Campjab
 
-A simple XMPP bot designed to run on a nodejs server, controlled remotely via a Web interface.
+A MUC Jabber bot that archives all the messages and shows them in
+realtime on a web frontend (inline images and oembed content supported)
 
-It is based on [node-xmpp](https://github.com/astro/node-xmpp) and [junction](https://github.com/jaredhanson/junction).
+# Deploy
 
-## License
+Campjab needs MongoLab plugin some environment variables to work:
 
-	Copyright 2012 Aaditya Bhatia
-
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-
-		http://www.apache.org/licenses/LICENSE-2.0
-
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
-
+```
+MONGOLAB_URI=
+XMPP_HOST=
+XMPP_NICK=
+XMPP_PASS=
+XMPP_ROOM=
+XMPP_USER=
+OEMBEDLY_KEY=
+BASIC_AUTH_USER=
+BASIC_AUTH_PASS=
+```
