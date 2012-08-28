@@ -25,13 +25,14 @@ db.once 'open', ->
     do (event) ->
       room.on event, (eventDetails) ->
         console.dir eventDetails
-        roomEvent = new RoomEvent(eventDetails)
-        roomEvent.save ->
-          server.pushEvent(roomEvent)
+        RoomEvent.isDuplicateEvent eventDetails, (event) ->
+          unless event
+            roomEvent = new RoomEvent(eventDetails)
+            roomEvent.save ->
+              server.pushEvent(roomEvent)
 
   if url = config.get('server:url')
     url += '/' unless /\/$/.test url
-    setInterval =>
-      HttpClient.create("#{url}ping").post() (err, res, body) =>
-        console.log 'ping!'
+    setInterval ->
+      HttpClient.create("#{url}ping").post() (err, res, body) -> console.log 'ping!'
     , 1200000

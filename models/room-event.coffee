@@ -10,6 +10,17 @@ schema = new Mongoose.Schema
   meta: Mongoose.Schema.Types.Mixed,
   at: Date
 
+schema.statics.isDuplicateEvent = (attrs, cb) ->
+  if attrs.type == 'available' or attrs.type = 'unavailable'
+    @find().where('from').equals(attrs.from).sort("-at").limit(1).exec (err, results) ->
+      if err or results.length == 0
+        cb(no)
+      else
+        result = results[0]
+        cb(result.get('type') == attrs.type)
+  else
+    cb(no)
+
 schema.statics.findByDate = (limit = 50, since = null, cb) ->
   if since
     @findById since, (err, event) =>
